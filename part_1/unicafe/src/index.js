@@ -1,15 +1,29 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
-const Button = (props) => {
-	console.log(props)
+const Button = ({onClick}) => {
 	return (
-		<button onClick={props.onClick}>Moi</button>
+		<button onClick={onClick}>Moi</button>
 	)
 }
 const Display = ({value, counter}) => {
 	return (
 		<p>{value} : {counter}</p>
+	)
+}
+const Statistics = ({counterGood, counterNeutral, counterBad}) => {
+
+	const counterSum = counterGood + counterNeutral + counterBad
+
+	return (
+		<div>
+			<h1>Statistics</h1>
+			<Display value="Good" counter={counterGood} />
+			<Display value="Neutral" counter={counterNeutral} />
+			<Display value="Bad" counter={counterBad} />
+			<Display value="All" counter={counterSum} /> 
+			<Display value="Average" counter={counterSum / 3} /> 
+		</div>
 	)
 }
 
@@ -29,10 +43,10 @@ const App = () => {
 			<Button onClick={() => setToGood(good + 1)} />
 			<Button onClick={() => setToNeutral(neutral + 1)} />
 			<Button onClick={() => setToBad(bad + 1)} />
-			<h1>Statistics</h1>
-			<Display value="Good" counter={good} />
-			<Display value="Neutral" counter={neutral} />
-			<Display value="Bad" counter={bad} />
+			<Statistics 
+			counterGood={good}
+			counterNeutral={neutral}
+			counterBad={bad} />
     </div>
   )
 }
