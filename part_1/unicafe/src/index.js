@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
-const Button = ({onClick}) => {
+const Button = ({onClick, text}) => {
 	return (
-		<button onClick={onClick}>Moi</button>
+		<button onClick={onClick}>{text}</button>
 	)
 }
 const Display = ({value, counter}) => {
@@ -18,11 +18,19 @@ const Statistics = ({counterGood, counterNeutral, counterBad}) => {
 	return (
 		<div>
 			<h1>Statistics</h1>
-			<Display value="Good" counter={counterGood} />
-			<Display value="Neutral" counter={counterNeutral} />
-			<Display value="Bad" counter={counterBad} />
-			<Display value="All" counter={counterSum} /> 
-			<Display value="Average" counter={counterSum / 3} /> 
+			{counterSum !== 0 ?  
+				<div>
+					<Display value="Good" counter={counterGood} />
+					<Display value="Neutral" counter={counterNeutral} />
+					<Display value="Bad" counter={counterBad} />
+					<Display value="All" counter={counterSum} /> 
+					<Display value="Average" counter={(counterGood - counterBad) / counterSum} /> 
+					<Display value="Positive" counter={(counterGood) / counterSum * 100} /> 
+				</div>
+			 : 
+				<p>not loaded</p>
+			}
+
 		</div>
 	)
 }
@@ -40,9 +48,9 @@ const App = () => {
   return (
     <div>
       <h1>Give feedback</h1>
-			<Button onClick={() => setToGood(good + 1)} />
-			<Button onClick={() => setToNeutral(neutral + 1)} />
-			<Button onClick={() => setToBad(bad + 1)} />
+			<Button onClick={() => setToGood(good + 1)} text="good" />
+			<Button onClick={() => setToNeutral(neutral + 1)} text="neutral" />
+			<Button onClick={() => setToBad(bad + 1)} text="bad" />
 			<Statistics 
 			counterGood={good}
 			counterNeutral={neutral}
