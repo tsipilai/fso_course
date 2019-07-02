@@ -8,7 +8,10 @@ const Button = ({onClick, text}) => {
 }
 const Display = ({value, counter}) => {
 	return (
-		<p>{value} : {counter}</p>
+		<tr>
+			<td>{value}</td>
+			<td>{counter}</td>
+		</tr>
 	)
 }
 const Statistics = ({counterGood, counterNeutral, counterBad}) => {
@@ -20,12 +23,16 @@ const Statistics = ({counterGood, counterNeutral, counterBad}) => {
 			<h1>Statistics</h1>
 			{counterSum !== 0 ?  
 				<div>
-					<Display value="Good" counter={counterGood} />
-					<Display value="Neutral" counter={counterNeutral} />
-					<Display value="Bad" counter={counterBad} />
-					<Display value="All" counter={counterSum} /> 
-					<Display value="Average" counter={(counterGood - counterBad) / counterSum} /> 
-					<Display value="Positive" counter={(counterGood) / counterSum * 100} /> 
+					<table>
+						<tbody>
+							<Display value="Good" counter={counterGood} />
+							<Display value="Neutral" counter={counterNeutral} />
+							<Display value="Bad" counter={counterBad} />
+							<Display value="All" counter={counterSum} /> 
+							<Display value="Average" counter={(counterGood - counterBad) / counterSum} /> 
+							<Display value="Positive" counter={(counterGood) / counterSum * 100} /> 
+						</tbody>
+					</table>
 				</div>
 			 : 
 				<p>not loaded</p>
