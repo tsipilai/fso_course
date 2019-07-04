@@ -13,7 +13,12 @@ const App = () => {
     const personObject = {
       name: newName
     }
-    setPersons(persons.concat(personObject))
+
+    if (persons.some(person => person.name === newName)) {
+      alert(`${newName} Löytyy jo`)
+    } else {
+      setPersons(persons.concat(personObject))
+    }
     setNewName('')
   }
 
