@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+  import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
 const Filter = ({newFilter, handleChangeFilter}) => {
@@ -62,7 +62,7 @@ const App = () => {
 
   const handleChangeFilter = (event) => {
     setNewFilter(event.target.value)
-  }
+  } 
 
   useEffect( () => {
     axios
