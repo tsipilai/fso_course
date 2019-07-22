@@ -24,6 +24,7 @@ const App = () => {
 
   const [filter, newFilter] = useState('Fi')
   const [countries, newCountries] = useState([])
+  const [weather, newWeather] = useState('')
 
   const handleChange = (event) => {
     console.log(event.target.value)
@@ -35,11 +36,20 @@ const App = () => {
     newFilter(event.target.value)
   }
 
+  const getWeather = (value) => {
+    axios
+      .get(`http://api.apixu.com/v1/current.json?key=04242ede56df4e4fbcc213419192007&q=${value}`)
+      .then(response => 
+        newWeather(response.data))
+  }
+
   useEffect(() => {
     axios 
       .get('https://restcountries.eu/rest/v2/all')
       .then(response => 
         newCountries(response.data))
+    
+     
   }, []) 
 
   const listCountries = countries
@@ -53,6 +63,7 @@ const App = () => {
       return "yli kymmenen"
     } else if (countries.length === 1) {
       const country = countries[0]
+      const weather = getWeather(country.capital)   
       return (
         <div>
           <h1>{country.name}</h1>
@@ -60,6 +71,8 @@ const App = () => {
           <h5>Population {country.population}</h5>
           <ul>{country.languages.map((language, key) => <li key={key}>{language.name}</li>) }</ul>
           <img src={country.flag} alt={country.name} />
+          <h1>Weather in {country.name}</h1>
+          <p>Temperature {console.log(weather)}</p>
         </div>
       ) 
     } else {
@@ -76,7 +89,7 @@ const App = () => {
  
   return (
     <div className="App">
-      {console.log(listCountries)}
+      {console.log(weather)}
      {displayCountries(listCountries)}
       <Form handleChange={handleChange} />
       
