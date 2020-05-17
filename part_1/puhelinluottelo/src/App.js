@@ -35,6 +35,14 @@ const Persons = ({rows}) => {
   )
 }
 
+const DeleteButton = ({deleteNumber, personId}) => {
+  return ( 
+    <button onClick={deleteNumber} value={personId}>
+      Delete
+    </button>
+  )
+}
+
 const App = () => {
   const [ persons, setPersons ] = useState([])
   const [ newName, setNewName ] = useState('')
@@ -47,10 +55,22 @@ const App = () => {
     if (persons.some(person => person.name === newName)) {
       alert(`${newName} Löytyy jo`)
     } else {
-      setPersons(persons.concat(personObject))
-      numberService.create(personObject)
+      numberService
+        .create(personObject)
+        .then(addPerson => {
+          setPersons(persons.concat(addPerson))
+        })
     }
     setNewName('')
+  }
+
+  const deleteNumber = (event) => {
+    window.confirm("Are you sure you want to delete?") &&
+      numberService
+       .deleteSingle(event.target.value) 
+       .then(deletedPerson =>
+        setPersons(persons.filter(person => person.id !== parseInt(deletedPerson)))
+        )
   }
 
   const handleChange = (event) => {
@@ -68,13 +88,13 @@ const App = () => {
   useEffect( () => {
     numberService
       .getAll()
-      .then(response => {
-        setPersons(response.data)
+      .then(allPersons => {
+        setPersons(allPersons)
       })
   }, [])
 
   const rows = persons.filter((person) => person.name.toUpperCase().includes(newFilter.toUpperCase())).map((person, key) => 
-    <p key={key}>{person.name} {person.number}</p>
+    <p key={key}>{person.name} {person.number} <DeleteButton deleteNumber={deleteNumber} personId={person.id}/></p>
   )
 
   return (

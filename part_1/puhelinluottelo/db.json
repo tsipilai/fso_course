@@ -6,11 +6,6 @@
       "id": 1
     },
     {
-      "name": "Martti Tienari",
-      "number": "040-123456",
-      "id": 2
-    },
-    {
       "name": "Arto Järvinen",
       "number": "040-123456",
       "id": 3
@@ -26,19 +21,9 @@
       "id": 5
     },
     {
-      "name": "Leea ",
-      "number": "112",
-      "id": 6
-    },
-    {
-      "name": "Testi ",
-      "number": "123123",
+      "name": "12312",
+      "number": "23123",
       "id": 7
-    },
-    {
-      "name": "asdasd",
-      "number": "123123",
-      "id": 8
     }
   ]
 }
