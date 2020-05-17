@@ -52,8 +52,17 @@ const App = () => {
   const addName = (event) => {
     event.preventDefault()
     const personObject = { name: newName, number: newNumber }
-    if (persons.some(person => person.name === newName)) {
-      alert(`${newName} Löytyy jo`)
+    const singlePerson = persons.filter(person => (person.name === newName))
+
+    if (singlePerson[0]) {
+      window.confirm(`${newName} Löytyy jo, päivitetäänkö numero?`) &&
+      numberService
+        .update(singlePerson[0].id, personObject)
+        .then(returnedPerson => {
+          setPersons(persons.map(person => person.id !== singlePerson[0].id ? person : returnedPerson ))
+        })
+      console.log(singlePerson[0])
+      console.log(persons)
     } else {
       numberService
         .create(personObject)
@@ -92,7 +101,6 @@ const App = () => {
         setPersons(allPersons)
       })
   }, [])
-
   const rows = persons.filter((person) => person.name.toUpperCase().includes(newFilter.toUpperCase())).map((person, key) => 
     <p key={key}>{person.name} {person.number} <DeleteButton deleteNumber={deleteNumber} personId={person.id}/></p>
   )

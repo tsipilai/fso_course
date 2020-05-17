@@ -16,8 +16,19 @@ const deleteSingle = id => {
     return request.then(() => id)
 }
 
+const update = (singlePersonId, personObject) => {
+    const updateData = { 
+        name: personObject.name,
+        number: personObject.number,
+        id: singlePersonId,
+    }
+    const request = axios.put(`${baseUrl}/${singlePersonId}`, updateData)
+    return request.then(() => updateData)
+}
+
 export default {
     getAll: getAll,
     create: create,
-    deleteSingle: deleteSingle
+    deleteSingle: deleteSingle,
+    update: update
 }
