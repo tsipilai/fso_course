@@ -17,7 +17,7 @@ const Form = ( { addName, newName, handleChange, newNumber, handleChangeNumber }
           Name: <input value={newName} onChange={handleChange} />
         </div>
         <div>
-          Numver: <input value={newNumber} onChange={handleChangeNumber} />
+          Number: <input value={newNumber} onChange={handleChangeNumber} />
         </div>
         <div>
           <button type="submit">add</button>
@@ -48,6 +48,13 @@ const App = () => {
       alert(`${newName} Löytyy jo`)
     } else {
       setPersons(persons.concat(personObject))
+
+      axios
+        .post('http://localhost:3001/persons', personObject)
+        .then(response => {
+          console.log(response)
+        })
+
     }
     setNewName('')
   }
@@ -80,7 +87,7 @@ const App = () => {
     <div>
       <h2>Filter</h2>
       <div>
-      <Filter newFilter={newFilter} handleChangeFilter={handleChangeFilter} />
+        <Filter newFilter={newFilter} handleChangeFilter={handleChangeFilter} />
       </div>
       <h2>Add new</h2>
       <Form addName={addName} newName={newName} handleChange={handleChange} newNumber={newNumber} handleChangeNumber={handleChangeNumber} /> 
