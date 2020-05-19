@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import numberService from '../src/services/numbers'
+import "./index.css"
 
 const Filter = ({newFilter, handleChangeFilter}) => {
   return (
@@ -43,11 +44,23 @@ const DeleteButton = ({deleteNumber, personId}) => {
   )
 }
 
+const Notification = ({message}) => {
+  if(message === null) {
+    return null
+  }
+  return (
+    <h1 className="notification">
+      {message}
+    </h1>
+  )
+}
+
 const App = () => {
   const [ persons, setPersons ] = useState([])
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ newFilter, setNewFilter ] = useState('')
+  const [ newMessage, setNewMessage ] = useState(null)
 
   const addName = (event) => {
     event.preventDefault()
@@ -60,14 +73,20 @@ const App = () => {
         .update(singlePerson[0].id, personObject)
         .then(returnedPerson => {
           setPersons(persons.map(person => person.id !== singlePerson[0].id ? person : returnedPerson ))
+          setNewMessage(`${returnedPerson.name}'s number was updated from ${singlePerson[0].number} to ${returnedPerson.number}`)
+          setTimeout(() => {
+            setNewMessage(null)
+          }, 5000)
         })
-      console.log(singlePerson[0])
-      console.log(persons)
     } else {
       numberService
         .create(personObject)
         .then(addPerson => {
           setPersons(persons.concat(addPerson))
+          setNewMessage(`${personObject.name} was added`)
+          setTimeout(() => {
+            setNewMessage(null)
+          }, 2000)
         })
     }
     setNewName('')
@@ -77,9 +96,14 @@ const App = () => {
     window.confirm("Are you sure you want to delete?") &&
       numberService
        .deleteSingle(event.target.value) 
-       .then(deletedPerson =>
-        setPersons(persons.filter(person => person.id !== parseInt(deletedPerson)))
-        )
+       .then(deletedPerson => {
+          let deletedPersonObj = persons.find(person => person.id === parseInt(deletedPerson))
+          setPersons(persons.filter(person => person.id !== parseInt(deletedPerson)))
+          setNewMessage(`${deletedPersonObj.name} was removed`)
+          setTimeout(() => {
+            setNewMessage(null)
+          }, 5000)
+       })
   }
 
   const handleChange = (event) => {
@@ -102,7 +126,7 @@ const App = () => {
       })
   }, [])
   const rows = persons.filter((person) => person.name.toUpperCase().includes(newFilter.toUpperCase())).map((person, key) => 
-    <p key={key}>{person.name} {person.number} <DeleteButton deleteNumber={deleteNumber} personId={person.id}/></p>
+    <p key={key} className="person-row">{person.name} {person.number} <DeleteButton deleteNumber={deleteNumber} personId={person.id}/></p>
   )
 
   return (
@@ -114,6 +138,7 @@ const App = () => {
       <h2>Add new</h2>
       <Form addName={addName} newName={newName} handleChange={handleChange} newNumber={newNumber} handleChangeNumber={handleChangeNumber} /> 
       <h2>Numbers</h2>
+      <Notification message={newMessage} />
       <Persons rows={rows} />
     </div>
   )
