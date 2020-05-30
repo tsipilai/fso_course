@@ -31,6 +31,13 @@ code {
   font-size: 1.5rem;
 }
 
+.notification.error {
+  background-color: red;
+  color: white; 
+  padding: 7px 15px;
+  font-size: 1.5rem;
+}
+
 .person-row {
   border-bottom: 1px solid lightsalmon;
   padding-bottom: .75rem;

@@ -48,9 +48,10 @@ const Notification = ({message}) => {
   if(message === null) {
     return null
   }
+  console.log(message)
   return (
-    <h1 className="notification">
-      {message}
+    <h1 className={`notification ${message[1]}`}>
+      {message[0]}
     </h1>
   )
 }
@@ -73,7 +74,13 @@ const App = () => {
         .update(singlePerson[0].id, personObject)
         .then(returnedPerson => {
           setPersons(persons.map(person => person.id !== singlePerson[0].id ? person : returnedPerson ))
-          setNewMessage(`${returnedPerson.name}'s number was updated from ${singlePerson[0].number} to ${returnedPerson.number}`)
+          setNewMessage([`${returnedPerson.name}'s number was updated from ${singlePerson[0].number} to ${returnedPerson.number}`, 'success'])
+          setTimeout(() => {
+            setNewMessage(null)
+          }, 5000)
+        })
+        .catch((returnedPerson) => {
+          setNewMessage([`${singlePerson[0].name}' ei löydy. Suattaapi olla jo poistettu`, 'error'])
           setTimeout(() => {
             setNewMessage(null)
           }, 5000)
@@ -83,7 +90,7 @@ const App = () => {
         .create(personObject)
         .then(addPerson => {
           setPersons(persons.concat(addPerson))
-          setNewMessage(`${personObject.name} was added`)
+          setNewMessage([`${personObject.name} was added`, 'success'])
           setTimeout(() => {
             setNewMessage(null)
           }, 2000)
@@ -138,6 +145,7 @@ const App = () => {
       <h2>Add new</h2>
       <Form addName={addName} newName={newName} handleChange={handleChange} newNumber={newNumber} handleChangeNumber={handleChangeNumber} /> 
       <h2>Numbers</h2>
+      {console.log(newMessage)}
       <Notification message={newMessage} />
       <Persons rows={rows} />
     </div>
